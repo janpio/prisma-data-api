@@ -8,6 +8,6 @@ Middleware that intercepts all Prisma queries and translates them into a HTTP re
 
 - Tiny app using Prisma to run 1 query
 - Confirm middleware can completely skip actual query execution and return whatever
-- Send request to URL that contains query information as payload
-- Webserver that accepts data and constructs a query out of that, and executes it
+- Send request to URL that returns static data
 - Middleware accepts returned data as result of query and returns it to the app
+- Request accepts query parameters as payload, constructs query out of that, executes it and returns result

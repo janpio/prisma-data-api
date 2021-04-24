@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+const fetch = require('node-fetch');
 
 const prisma = new PrismaClient({ log: ['query']})
 
@@ -6,11 +7,14 @@ async function main() {
 
   prisma.$use(async (params, next) => {
     console.log({ params })
-    const result = [
-      { foo: 1, email: 'alice@example.org', name: 'Alice' },
-      { id: 2, email: 'bob@example.org', name: 'Bob' }
-    ]; //
-    //await next(params);
+
+    const url = 'http://localhost:3000/api'
+    const response = await fetch(url);
+    const data = await response.json();
+
+    console.log({ data })
+
+    let result = data
     return result;
   })
 
