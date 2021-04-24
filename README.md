@@ -4,6 +4,20 @@
 
 Middleware that intercepts all Prisma queries and translates them into a HTTP request against a long running server that executes the same query against the database and returns the result as the HTTP response, which is then returned for the original query.
 
+## How to run this
+
+Open 2 terminals.
+
+Terminal 1:
+```
+npx ts-node ./server.ts
+```
+
+Terminal 2:
+```
+npx ts-node ./data-api.ts
+```
+
 ## Implementation steps
 
 - Tiny app using Prisma to run 1 query
