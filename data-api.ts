@@ -1,21 +1,11 @@
 import { PrismaClient } from '@prisma/client'
-import fetch from 'node-fetch';
+import { DataApi } from './data-api-middleware';
 require('log-timestamp');
 
-const prisma = new PrismaClient({ log: ['query']})
-
-prisma.$use(async (params, next) => {
-  console.log('')
-  console.log('Query:', params)
-
-  const url = 'http://localhost:3000/api'
-  const response = await fetch(url, {method:'POST', body: JSON.stringify(params), headers: { 'Content-Type': 'application/json' }});
-  const result = await response.json();
-
-  // TODO error handling
-
-  return result;
-})
+const prisma = new PrismaClient({ log: ['query'] })
+prisma.$use(
+  DataApi({ endpoint: 'http://localhost:3000/api' })
+)
 
 async function main() {
   const allUsers = await prisma.user.findMany()
@@ -24,7 +14,7 @@ async function main() {
     console.log({ user })
   }
 
-  const oneUser = await prisma.user.findUnique({ where: { email: 'alice@example.org' }})
+  const oneUser = await prisma.user.findUnique({ where: { email: 'alice@example.org' } })
   console.log({ oneUser })
 }
 
