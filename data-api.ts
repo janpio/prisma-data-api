@@ -10,7 +10,7 @@ prisma.$use(
 async function main() {
  
   await prisma.user.deleteMany({})
-  
+
   const user1 = await prisma.user.create({
     data: {
       email: 'alice@prisma.io',
@@ -27,6 +27,22 @@ async function main() {
       posts: true,
     },
   })
+
+  try {
+    const user1_2 = await prisma.user.create({
+      data: {
+        email: 'alice@prisma.io',
+        name: 'Alice',
+      },
+    })
+  } catch (error) {
+    if(error.code === 'P2002') {
+      console.log('User already exists (as expected)')
+    } else {
+      throw new Error('bad')
+    }
+  }
+
   const user2 = await prisma.user.create({
     data: {
       email: 'bob@prisma.io',

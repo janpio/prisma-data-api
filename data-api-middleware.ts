@@ -12,11 +12,19 @@ export const DataApi = (options: DataApiOptions): Prisma.Middleware => {
     console.log('')
     console.log('Query:', params)
 
-    const response = await fetch(endpoint, {method:'POST', body: JSON.stringify(params), headers: { 'Content-Type': 'application/json' }});
+    const response = await fetch(endpoint, { method: 'POST', body: JSON.stringify(params), headers: { 'Content-Type': 'application/json' } });
     const result = await response.json();
 
-    // TODO error handling
+    if (response.status === 200)
+      return result
 
-    return result;
+    console.log({ result })
+    const error = JSON.parse(result.error)
+    const message = JSON.parse(result.message)
+
+    // TODO Use actual error type to throw
+    // let errorType: string = result.type.substring(0, result.type.length - 1)
+    // console.log({errorType})
+    throw new Prisma.PrismaClientKnownRequestError(message, error.code, error.clientVersion, error.meta)
   };
 };
