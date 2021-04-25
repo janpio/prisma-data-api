@@ -10,12 +10,12 @@ Open 2 terminals.
 
 Terminal 1:
 ```
-npx ts-node ./server.ts
+npx ts-node ./src/server.ts
 ```
 
 Terminal 2:
 ```
-npx ts-node ./data-api.ts
+npx ts-node ./src/data-api.ts
 ```
 
 ## Implementation steps

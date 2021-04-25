@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { DataApi } from './data-api-middleware';
+import { DataApi } from './middleware/data-api-middleware';
 require('log-timestamp');
 
 const prisma = new PrismaClient({ log: ['query'] })
