@@ -1,3 +1,5 @@
+const measure_start = process.hrtime.bigint()
+
 import { PrismaClient } from '@prisma/client'
 import { DataApi } from './middleware/data-api-middleware';
 require('log-timestamp');
@@ -9,8 +11,12 @@ prisma.$use(
   DataApi({ endpoint: 'http://localhost:3000/api' }) // TODO env
 )
 
+const measure_client = process.hrtime.bigint()
+
 async function main() {
- 
+
+  const measure_main = process.hrtime.bigint()
+  
   await prisma.user.deleteMany({})
 
   const user1 = await prisma.user.create({
@@ -114,6 +120,17 @@ async function main() {
     .posts()
   console.log(`Retrieved all posts from a specific user: ${postsByUser}`)
 
+  const measure_queries = process.hrtime.bigint()
+
+  console.log( { 
+    measurements: {
+      outside_main: Number(measure_client-measure_start) / 1000000000,
+      inside_main: Number(measure_queries-measure_main) / 1000000000,
+      // inside_main_connect: Number(measure_connect-measure_main) / 1000000000,
+      // inside_main_queries: Number(measure_queries-measure_connect) / 1000000000,
+      //since_environment_start: Number(measure_queries-measure_start) / 1000000000,
+    }
+  })
 }
 
 main()
