@@ -2,9 +2,11 @@ import { PrismaClient } from '@prisma/client'
 import { DataApi } from './middleware/data-api-middleware';
 require('log-timestamp');
 
+// TODO make this a serverless function
+
 const prisma = new PrismaClient({ log: ['query'] })
 prisma.$use(
-  DataApi({ endpoint: 'http://localhost:3000/api' })
+  DataApi({ endpoint: 'http://localhost:3000/api' }) // TODO env
 )
 
 async function main() {
